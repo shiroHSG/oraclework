@@ -527,8 +527,55 @@ END;
        2.1) FOR LOOP
        2.2) WHILE LOOP
 */
+DECLARE
+    EMP EMPLOYEE%ROWTYPE;
+    YEARSAL NUMBER;
+BEGIN
+    SELECT *
+    INTO EMP
+    FROM EMPLOYEE
+    WHERE EMP_ID = '&사번';
     
+    IF(EMP.BONUS IS NULL)
+        THEN YEARSAL := EMP.SALARY * 12;
+    ELSE YEARSAL := EMP.SALARY * (1 + EMP.BONUS) * 12;
+    END IF;
+    
+    DBMS_OUTPUT.PUT_LINE(EMP.EMP_NAME || '의 연봉은 ' || TO_CHAR(YEARSAL, 'L999,999,999'));
+END;
+/
+    
+-- 2.1. FOR LOOP
+BEGIN
+    FOR DAN IN 2..9
+    LOOP
+        IF MOD(DAN, 2) = 0
+            THEN
+                FOR Z IN 1..9
+                LOOP
+                    DBMS_OUTPUT.PUT_LINE(DAN || ' * ' || Z || ' = ' || DAN * Z);
+                END LOOP;
+                DBMS_OUTPUT.PUT_LINE('');
+        END IF;
+    END LOOP;
+END;
+/
 
-
-
-
+-- 2.2. WHILE LOOP
+DECLARE
+    DAN NUMBER := 2;
+    Z NUMBER;
+BEGIN
+    WHILE DAN <= 9
+    LOOP
+        Z := 1;
+        WHILE Z <= 9
+        LOOP
+            DBMS_OUTPUT.PUT_LINE(DAN || ' * ' || Z || ' = ' || DAN * Z);
+            Z := Z+1;
+        END LOOP;
+        DBMS_OUTPUT.PUT_LINE('');
+        DAN := DAN + 2;
+    END LOOP;
+END;
+/
